@@ -1,0 +1,32 @@
+.flexbox {
+    display: flex;
+    flex-direction: column;
+  }
+  /* .inner {
+    display: flex;
+    align-items: flex-end;
+  } */
+  /* .item {
+    flex-grow: 1;
+  } */
+  .flexItemTitle {
+    font-size: '13px';
+    color: rgb(24,24,24);
+  }
+  .flexItemSubtitle {
+    font-size: '12px';
+    color: rgb(68,68,68);
+  }
+
+  /* .selected {
+    background-color: rgb(243, 243, 243);
+  }
+
+  .white {
+    background-color: rgb(255, 255, 255);
+  } */
+
+  .searchBar {
+    border: 1px solid rgb(201, 201, 201);
+    box-shadow: rgb(35, 118, 204) 0px 0px 3px 0px;
+  }

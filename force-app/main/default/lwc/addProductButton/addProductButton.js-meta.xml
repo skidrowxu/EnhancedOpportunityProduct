@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="oppoId" label="Opportunity Id" type="String"></property>
+            <!-- <property name="fieldSetName" label="Field Set Name" type="String" default="Add_Products"/> -->
+            <property name="fields" label="Fields' API Name" type="String" default="Product2.Id, Product2.Name, Product2.ProductCode, PricebookEntry.UnitPrice, Product2.Description, Product2.Family"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

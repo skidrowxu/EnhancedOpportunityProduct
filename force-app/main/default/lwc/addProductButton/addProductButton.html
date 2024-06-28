@@ -1,0 +1,244 @@
+<template>
+  <!-- header -->
+  <div class="header">
+    <templat lwc:if={isPage1}>
+      <div class="title">Add Products</div>
+      <div class="subtitle">Price Book: Standard</div>
+    </templat>
+    <template lwc:else>
+      <div class="title">Edit Selected Products</div>
+    </template>
+  </div>
+
+  <!-- body -->
+  <div class="body">
+    <template lwc:if={isPage1}>
+        <div class="searchBlock">
+          <c-reusable-lookup selected-icon-name="standard:pricebook"
+            object-api-name = "PricebookEntry"
+            field-api-names = {cleanedFields}
+            filter-field-api-name = "Product2.Name"
+            main-filter = "Pricebook2Id in (SELECT Pricebook2Id FROM Opportunity WHERE Id = "
+            oppo-id = {oppoId}
+            sort-by-filed = "Product2.Name"
+            top-num = {topNumForLookup}
+            checked-pricebook-entry-ids = {checkedPricebookEntryIds}
+            onrecordselected={handleRecordSelected}
+            onsearch={searchByKeywords}
+            onsearchall={searchAll}>
+          </c-reusable-lookup>
+        </div>
+      <p class="selecticon">Show Selected ({numOfSelectedRows})</p>
+      <div class="datatable">
+        <template lwc:if={isLoading}>
+          <lightning-spinner
+            alternative-text="Loading..."
+            variant="brand"
+            size="large"
+          >
+          </lightning-spinner>
+        </template>
+        <template lwc:else>
+          <lightning-datatable
+            show-row-number-column="true"
+            key-field="PricebookEntryId"
+            data={pricebookEntries}
+            columns={columns}
+            enable-infinite-loading
+            onloadmore={loadMoreData}
+            onrowselection = {handleRowSelection}
+            sorted-by={sortBy}
+            sorted-direction={sortDirection}
+            onsort={doSorting}
+            selected-rows={selectedRows}
+            class = 'datatable'
+          >
+          </lightning-datatable>
+        </template>
+      </div> 
+    </template>
+
+    <!-- page 2 -->
+    <template lwc:else>
+      <template lwc:if={isLoadingpage2}>
+        <lightning-spinner
+          alternative-text="Loading..."
+          variant="brand"
+          size="large"
+        >
+        </lightning-spinner>
+      </template>
+      <template lwc:else> 
+        <div class="page2"  tabindex="0">
+          <!-- <div class="page2"  tabindex="0" onblur={handleTableBlur} > -->
+          <!-- headers -->
+          <div class="tabeleHeader" onclick={clickHeader} >
+            <div class="orderNumItem" ></div>
+            <div 
+              class="items" 
+              onmouseleave={handleMouseLeave}
+              onmousedown={handleMouseDownOnHeaders}
+            > 
+              <template iterator:it={oppoLineItemFieldMembers}>
+                <div 
+                  class="item" 
+                  key={it.value.name} 
+                  data-column={it.value.name} 
+                  data-index={it.index}
+                >
+                  <template lwc:if={it.value.required}> 
+                    <span class="asteroid">*</span>
+                  </template>
+                  <template lwc:else>
+                    <span>&nbsp;&nbsp;</span>
+                  </template>
+                  {it.value.label}
+                </div>
+              </template>
+            </div>
+            <!-- onmouseout={handleMouseOutOnHeaders} -->
+            <div 
+              class="removeIconItem" 
+              data-column="removeIconItem" 
+              data-index="5" 
+              onmousedown={handleMouseDownOnHeaders}
+              onmouseleave={handleMouseLeave}>
+            </div>
+            <!-- onmouseout={handleMouseOutOnHeaders} -->
+            <!-- onmousemove={handleMouseMoveOnHeaders} -->
+          </div>
+          <!-- Column Wrapper -->
+          <div class="tableContentWrapper">
+            <div class="orderNumItemWrapper"></div>
+            <div 
+              class="itemsWrapper" 
+              onmousemove={handleMouseMoveOnWrapper}
+              onmouseleave={handleMouseLeave}
+              onmousedown={handleMouseDownOnWrapper}
+            > 
+              <template iterator:it={oppoLineItemFieldMembers}>
+                <div 
+                  class="itemWrapper" 
+                  key={it.value.name} 
+                  data-wrapper-column={it.value.name} 
+                  data-wrapper-index={it.index}>
+                </div>
+              </template>
+            </div>
+            <div 
+              class="removeIconItemWrapper" 
+              data-column="removeIconItem" 
+              data-wrapper-index="5"
+              onmousemove={handleMouseMoveOnWrapper}
+              onmouseleave={handleMouseLeave}
+              onmousedown={handleMouseDownOnWrapper}
+            >
+            </div>
+        </div>
+          <div class="tableContent">
+            <template iterator:it={checkedPricebookEntries}>
+              <div key={it.value.PricebookEntryId}>
+                <c-product-line-item
+                  oppo-line-item-field-members = {oppoLineItemFieldMembers}
+                  oppo-id = {oppoId}
+                  pricebook-entry = {it.value}
+                  index = {it.index}
+                  index-regen = {it.value.indexRegen}
+                  item-height = {itemHeight}
+                  previous-highlighted-cell = {currentHighlightedCell}
+                  previous-highlighted-cell-div = {currentHighlightedCellDiv}
+                  clicked-save-button = {clickedSaveButton}
+                  remove-icon-item = {removeIconItem}
+                  onclickfield = {handleClickField}
+                  oninputblur = {handleInputBlur}
+                  onhideheaderborder = {unhighlightAllHeaders}
+                  ondeleterow = {handleDeleteRow}
+                  onupdaterow = {handleUpdateRow}
+                  onemptypreviouscell = {emptyPreviousHighlightedCell}
+                  onblockheaderstyle = {handleBolckHeaderStyle}
+                  rest-item-size = {restItemSize}
+                  oncustommousemove = {handleMouseMoveFromChildCmp}
+                  oncustommousedown = {handleMouseDownFromChildCmp}
+                  prevent-click = {preventClick}
+                >
+                <!-- oncustommousemove = {handleMouseMoveFromChildCmp} -->
+                </c-product-line-item>
+                <!-- is-initial-run = {isInitialRun} -->
+                <!-- item-header-width = {itemWidth} -->
+                <!-- is-left-remove-icon-item-hovering = {isLeftRemoveIconItemHovering}
+                is-remove-icon-item-clicked= {isRemoveIconItemClicked} -->
+              </div>
+            </template>
+            <template lwc:if={noItems}> 
+              <div class="noItems">
+                No items to display.
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </template>
+  </div>
+
+  <!-- footing -->
+  <div class="footing">
+    <template lwc:if={showNextButton}> 
+      <lightning-button 
+        variant="brand" 
+        label="Next" 
+        onclick={handleNext} 
+        class="slds-m-left_x-small">
+      </lightning-button>
+    </template>
+    <template lwc:if={showSaveAndPreviousButton}> 
+      <lightning-button 
+        variant="brand" 
+        label="Save" 
+        onclick={handleSave} 
+        class="slds-m-left_x-small">
+      </lightning-button>
+      <lightning-button 
+        variant="brand-outline"
+        label="Back" 
+        onclick={handleBack} 
+        class="slds-m-left_x-small backButton">
+      </lightning-button>
+    </template>    
+
+    <div class="cancelButtonContainer">
+      <lightning-button 
+        variant="brand-outline" 
+        label="Cancel" 
+        onclick={handleCancel} 
+        class="slds-m-left_x-small">
+      </lightning-button>
+
+      <div class="errorIcon" >
+        <lightning-icon  
+          icon-name="utility:error" 
+          size="medium" 
+          onfocus={showErrorMsg} 
+          onblur={hideErrorMsg} 
+          tabindex="0">
+        </lightning-icon>
+        <div class="errorMessage">
+          <div>
+            <strong>Can't save records with errors.</strong>
+          </div>
+          <div class="errorUl">
+            <ul class="slds-list_dotted">
+              <template iterator:it={errorSentences}>
+                <li key={it.value}>{it.value}</li>
+              </template>
+            </ul>
+          </div>
+          <lightning-icon  
+            icon-name="utility:close" 
+            size="x-small" 
+            onclick={hideErrorMsg}>
+          </lightning-icon>
+        </div>
+      </div>
+    </div>
+  </div> 
+</template>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <formulas>
+        <name>recordId_18</name>
+        <dataType>String</dataType>
+        <expression>CASESAFEID({!recordId})</expression>
+    </formulas>
+    <interviewLabel>add Product Button Screen {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>add Product Button Screen</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <description>Fields&apos; API Name need to follow this format:
+ObjectA.FieldB, ObjectC.FieldD</description>
+        <name>Add_Product_Button</name>
+        <label>Add Product Button</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>addProductButton</name>
+            <extensionName>c:addProductButton</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>oppoId</name>
+                <value>
+                    <elementReference>recordId_18</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fields</name>
+                <value>
+                    <stringValue>Product2.Id, Product2.Name, Product2.ProductCode, PricebookEntry.UnitPrice, Product2.Description, Product2.Family</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Add_Product_Button</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>recordId for the related Opportunity</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
