@@ -201,8 +201,6 @@ export default class AddProductButton extends NavigationMixin(
         if (Object.keys(column).length > 0) {
           this.columns = [...this.columns, column];
         }
-      } else {
-        console.log("error in dynamic column loop");
       }
     });
     this.isLoading = false;
@@ -379,7 +377,6 @@ export default class AddProductButton extends NavigationMixin(
         this.selectedRows = [];
         break;
       case "rowSelect": {
-        // console.log(JSON.parse(JSON.stringify(event.detail)));
         this.checkedPricebookEntryIds.add(event.detail.config.value);
         let selectedRecord = event.detail.selectedRows.find(
           (e) => e.PricebookEntryId === event.detail.config.value
@@ -634,7 +631,6 @@ export default class AddProductButton extends NavigationMixin(
   }
   clickHeader(event) {
     if (this.preventClick) {
-      console.log("click event prevented");
       // Reset the flag
       this.preventClick = false;
       return; // Stop the click event from executing
@@ -644,7 +640,6 @@ export default class AddProductButton extends NavigationMixin(
       if (!this.isInputBlur) {
         this.previousHighlightedCell = {};
         this.isPage2TableClicked = true;
-        console.log("Header is clicked");
         this.unhighlightAllHeaders();
         this.setIsClickedToFalse();
         // let div = event.target;
@@ -1312,15 +1307,9 @@ export default class AddProductButton extends NavigationMixin(
           page2Div.style.width = minPage2Width + "px";
           footingDiv.style.width = page2Div.style.width;
           headerDiv.style.width = page2Div.style.width;
-
-          console.log("fieldDiv.offsetWidth", fieldDiv.offsetWidth);
           document.removeEventListener("mousemove", handleMouseMoveOnHeader);
           return; //stop shrinking cell
         }
-        console.log("eMove.movementX", eMove.movementX);
-        console.log(this.goLeft);
-        console.log("fieldDiv.className", fieldDiv.className);
-        console.log("fieldDiv.offsetWidth", fieldDiv.offsetWidth);
         const deltaX =
           eMove.clientX - this.oppoLineItemFieldMembers[index].lastMouseX;
         const fieldDivNewWidth = fieldDiv.offsetWidth + deltaX;

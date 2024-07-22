@@ -87,7 +87,6 @@ export default class ReusableLookup extends LightningElement {
               div.innerHTML = rec.Product2.Name.replaceAll(
                 new RegExp(this.searchString, "gi"),
                 (subStr) => {
-                  console.log(subStr);
                   return "<b>" + subStr + "</b>";
                 }
               );
@@ -129,10 +128,9 @@ export default class ReusableLookup extends LightningElement {
     })
       .then((result) => {
         this.recordsList = JSON.parse(JSON.stringify(result));
-        console.log(this.recordsList);
       })
       .catch((error) => {
-        console.log(error);
+        throw error;
       });
   }
 
@@ -207,7 +205,6 @@ export default class ReusableLookup extends LightningElement {
             this.currentLi <= 0 ? liDivs.length - 1 : --this.currentLi;
           liDivs[this.currentLi].classList.add("selected");
         }
-        console.log(this.currentMousePointedLiDiv === liDivs[this.currentLi]);
         if (
           this.currentMousePointedLiDiv &&
           this.currentMousePointedLiDiv === liDivs[this.currentLi] &&
@@ -230,7 +227,6 @@ export default class ReusableLookup extends LightningElement {
     this.currentMousePointedLiDiv?.style.backgroundColor === "white" &&
       this.currentMousePointedLiDiv.style.removeProperty("background-color");
     this.currentMousePointedLiDiv = event.currentTarget;
-    console.log(this.currentMousePointedLiDiv.dataset.index);
     let liDivs = this.template.querySelectorAll(".liDiv");
     //if it is Search term Li
     if (this.currentMousePointedLiDiv.dataset.index === undefined) {
@@ -255,7 +251,6 @@ export default class ReusableLookup extends LightningElement {
   }
 
   handleLeaveDropDownList() {
-    console.log(this.currentMousePointedLiDiv);
     !this.currentMousePointedLiDiv?.classList.contains("selected") &&
       this.currentMousePointedLiDiv?.classList.add("selected");
   }
