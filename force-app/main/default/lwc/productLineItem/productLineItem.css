@@ -1,111 +1,99 @@
 :host {
-    /* --restItemSize: 5%; */
-    /* --widthOfItem: calc((100% - 2 * var(--restItemSize)) / var(--numOfItems)); */
-    /* reason for minusing 1 px, because when we move mouse among cells to resize the columns;
+  /* reason for minusing 1 px, because when we move mouse among cells to resize the columns;
     if I don't minus 1px, the background-color will cover the resizing blue line on the border;
     so I have to keep 1px for the resizing line */
-    --adjustedWidth: calc(100% - 1px);
-    --minWidthShort: 52px;
-    --minWidthLong: 206px;
+  --adjustedWidth: calc(100% - 1px);
+  --minWidthShort: 52px;
+  --minWidthLong: 206px;
 }
 
-.container{
-    /* width: 100%; */
-    line-height: var(--itemHeight);
-    font-size: 13px;
-    background-color: rgb(255,255,255);
-    /* padding-top: 1px;  */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    /* justify-content: space-between; */
-    align-items: center; 
-    box-sizing: border-box;
+.container {
+  line-height: var(--itemHeight);
+  font-size: 13px;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 /* hovering mouse on a cell, change the background color of the cells before the hovered cell */
 /* .container > div:has(~ div:hover) is to select all the cells before the hovered cell, 
 and :not(:has(+ div:hover)) means select all the cells based on the selector before but excluding the cell just before the hovered cell  */
-.container > div:has(~ div:hover):not(:has(+ div:hover)){
-    background-color: rgb(243,243,243);
+.container > div:has(~ div:hover):not(:has(+ div:hover)) {
+  background-color: rgb(243, 243, 243);
 }
 
 /* only the one before hovered cell need to be width - 1px */
 /* linear-gradient is background, not background-color !!!! */
 .container > div:has(+ div:hover) {
-    background: linear-gradient(to right, rgb(243,243,243) calc(var(--adjustedWidth) * 1), transparent calc(var(--adjustedWidth) * 1));
+  background: linear-gradient(
+    to right,
+    rgb(243, 243, 243) calc(var(--adjustedWidth) * 1),
+    transparent calc(var(--adjustedWidth) * 1)
+  );
 }
 
 /* hovering mouse on a cell, change the background color of the cells after the hovered cell */
-.container > div:hover ~ div{
-    background-color: rgb(243,243,243);
+.container > div:hover ~ div {
+  background-color: rgb(243, 243, 243);
 }
-
-
-/* .container > div{
-    padding-left: 4px;
-} */
 
 .orderNumItem,
-.removeIconItem{
-    height: var(--itemHeight);
-    line-height: var(--itemHeight);
-    width: var(--restItemSize);
-    border-bottom: 1px solid rgb(128,128,128);
-    flex-grow: 0;
-    flex-shrink: 0;
-    min-width: var(--minWidthShort);
-    /* padding-left: 4px; */
+.removeIconItem {
+  height: var(--itemHeight);
+  line-height: var(--itemHeight);
+  width: var(--restItemSize);
+  border-bottom: 1px solid rgb(128, 128, 128);
+  flex-grow: 0;
+  flex-shrink: 0;
+  min-width: var(--minWidthShort);
 }
 
-.orderNumItem{
-    position: relative;
-    text-align: center;
-    /* margin:auto; */
-    /* min-width: 81.4px; */
+.orderNumItem {
+  position: relative;
+  text-align: center;
 }
 
 .removeIconItem {
-    text-align: left;
-    display: flex;
-    align-items: center;
-    z-index: 999;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  z-index: 999;
 }
 
 .removeIconItem > lightning-button-icon {
-    border: 1px solid rgb(116, 116, 116);
+  border: 1px solid rgb(116, 116, 116);
 }
 
-.item{
-    height: var(--itemHeight);
-    line-height: calc(var(--itemHeight) - 2px);
-    width: var(--widthOfItem);
-    border-bottom: 1px solid rgb(128,128,128);
-    position: relative;
-    flex-grow: 0;
-    flex-shrink: 0;
-    min-width: var(--minWidthLong);
+.item {
+  height: var(--itemHeight);
+  line-height: calc(var(--itemHeight) - 2px);
+  width: var(--widthOfItem);
+  border-bottom: 1px solid rgb(128, 128, 128);
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+  min-width: var(--minWidthLong);
 }
 
-.restFields{
-    height: calc(var(--itemHeight) - 4px);
-    margin: 2px 2px 2px 2px;
-    /* width: inherit; */
-    border-radius: 4px;
-    border: 1px solid rgb(229, 229, 229);
-    padding-left: 4px;
-    display: flex;
-    flex-direction: row;
-  	justify-content: space-between;
+.restFields {
+  height: calc(var(--itemHeight) - 4px);
+  margin: 2px 2px 2px 2px;
+  border-radius: 4px;
+  border: 1px solid rgb(229, 229, 229);
+  padding-left: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.firstField{
-    /* height: var(--itemHeight); */
-    padding-left: 4px;
-    display: flex;
-    flex-direction: row;
-  	justify-content: space-between;
-    /* border: 1px solid rgb(24,24,24); */
+.firstField {
+  padding-left: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .url,
@@ -113,174 +101,139 @@ and :not(:has(+ div:hover)) means select all the cells based on the selector bef
 .unitPriceValue,
 .serviceDateValue,
 .DescriptionValue {
-    flex: 0 0 auto;
-    height: inherit;
+  flex: 0 0 auto;
+  height: inherit;
 }
 
 .lockIcon,
 .editIcon {
-    padding: 7px;
-    flex: 0 0 calc(var(--widthOfItem) * 0.05);
-	margin-right: 3px;
-    opacity: 0;
+  padding: 7px;
+  flex: 0 0 calc(var(--widthOfItem) * 0.05);
+  margin-right: 3px;
+  opacity: 0;
 }
 
-.firstField:hover > div:nth-last-child(1){
-    opacity: 1;
+.firstField:hover > div:nth-last-child(1) {
+  opacity: 1;
 }
 
-/* .firstField:active{
-    background-color: black
-} */
-
-.requiredWithValue{
-    left: 0;
-    top: 0;
+.requiredWithValue {
+  left: 0;
+  top: 0;
 }
 
 .requiredWithValue,
 .requiredWithNoValue,
-.notRequired{
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin-top: 2px;
-    padding-left: 5px;
-    width: 100%;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 3px 0px;
-    visibility: hidden;
-    z-index: 999
+.notRequired {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 2px;
+  padding-left: 5px;
+  width: 100%;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 3px 0px;
+  visibility: hidden;
+  z-index: 999;
 }
 
-lightning-input{
-    /* padding-bottom: 8px; */
-    /* margin-bottom: 4px; */
-    background-color: white;
-    
+lightning-input {
+  background-color: white;
 }
-.requiredWithValue{
-    height: 105%;
+.requiredWithValue {
+  height: 105%;
 }
 
-.requiredWithNoValue{
-    height: 200%;
+.requiredWithNoValue {
+  height: 200%;
 }
 
 .notRequired {
-    height: 95%;
+  height: 95%;
 }
 
 .requiredWithValue > label > input,
 .requiredWithNoValue > label > input,
 .notRequired > input {
-    width: 95%;
-    border-radius: 4px;
-    color: rgb(3, 45, 96);
+  width: 95%;
+  border-radius: 4px;
+  color: rgb(3, 45, 96);
 }
 
 .notRequired > input {
-    width: 98%;
+  width: 98%;
 }
 
 .requiredWithValue > label > input,
 .notRequired > input {
-    height: calc(var(--itemHeight) - 4px);
-    border: 1px solid rgb(27, 150, 255);
-    box-shadow: rgb(1, 118, 211) 0px 0px 3px 0px;
-
+  height: calc(var(--itemHeight) - 4px);
+  border: 1px solid rgb(27, 150, 255);
+  box-shadow: rgb(1, 118, 211) 0px 0px 3px 0px;
 }
 
 .requiredWithNoValue > label > input {
-    height: calc(var(--itemHeight) - 6px);
-    border: 1px solid red;
-    box-shadow: rgb(186, 5, 23) 0px 0px 0px 1px inset;
+  height: calc(var(--itemHeight) - 6px);
+  border: 1px solid red;
+  box-shadow: rgb(186, 5, 23) 0px 0px 0px 1px inset;
 }
 
-/* .requiredWithValue > label > input:focus {
-    outline-color: red;
-    
-} */
-Label:has( > input[data-required])::before,
-Label:has( > input[data-required])::after {
-    color:red;
-    font-weight: bold;
+Label:has(> input[data-required])::before,
+Label:has(> input[data-required])::after {
+  color: red;
+  font-weight: bold;
 }
 
-Label:has( > input[data-required])::before {
-    content:'* ';
+Label:has(> input[data-required])::before {
+  content: "* ";
 }
 
-Label:has( > input[data-requiredcomplete])::after {
-    content:'Complete this field.';
-    display: block;
+Label:has(> input[data-requiredcomplete])::after {
+  content: "Complete this field.";
+  display: block;
 }
-
-
-
-/* .requiredWithValue > label,
-.requiredWithNoValue > label,
-.requiredWithNoValue > label + div  {
-    color: red;
-    font-weight: bold;
-} */
-
-
-/* .requiredWithValue > label > input::-webkit-outer-spin-button,
-.requiredWithValue > label > input::-webkit-inner-spin-button,
-.requiredWithNoValue > label > input::-webkit-outer-spin-button,
-.requiredWithNoValue > label > input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-} */
 
 .errorIcon {
-    position: absolute;
-    top: 7px;
-    left: 21px;
-    --lwc-colorTextIconDefault: red;
-    --sds-c-icon-color-foreground-default: red;
-    visibility: hidden;
+  position: absolute;
+  top: 7px;
+  left: 21px;
+  --lwc-colorTextIconDefault: red;
+  --sds-c-icon-color-foreground-default: red;
+  visibility: hidden;
 }
 
 .errorIcon:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .errorMessage {
-    position: absolute;
-    top: -52px;
-    left: -32px;
-    width: 160.453px;
-    height: 43.5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(234, 0, 30);
-    z-index: 999;
-    border-radius: 5px;
-    color: white;
-    border: 1px solid rgb(201, 201, 201);
-    line-height: 19.5px;
-    font-size: 13px;
-    font-weight: bold;
-    visibility: hidden;
+  position: absolute;
+  top: -52px;
+  left: -32px;
+  width: 160.453px;
+  height: 43.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(234, 0, 30);
+  z-index: 999;
+  border-radius: 5px;
+  color: white;
+  border: 1px solid rgb(201, 201, 201);
+  line-height: 19.5px;
+  font-size: 13px;
+  font-weight: bold;
+  visibility: hidden;
 }
 
 .errorMessage::after {
-    content: '';
-    position: absolute;
-    border: 10px solid;
-    border-color: rgb(234, 0, 30) transparent transparent transparent;
-    top: 41px;
-    left: 28px;
+  content: "";
+  position: absolute;
+  border: 10px solid;
+  border-color: rgb(234, 0, 30) transparent transparent transparent;
+  top: 41px;
+  left: 28px;
 }
 
 .errorMessage:hover {
-    cursor: default;
+  cursor: default;
 }
-
-
-/* .item[data-requiredwithoutvalue="true"] {
-    border: 3px solid rgb(168, 100, 3);
-} */

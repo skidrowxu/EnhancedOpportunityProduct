@@ -1,220 +1,131 @@
 <template>
-    <div class="container" onclick={clickField} onmousemove={handleMouseMove} onmousedown={handleMouseDown}>
-        <div class="orderNumItem" data-column="orderNumItem">
-            {orderNumber}
-            <div class="errorIcon" >
-              <lightning-icon  
-                icon-name="utility:error" 
-                size="x-small" 
-                onfocus={showItemErrorMsg} 
-                onblur={hideItemErrorMsg} 
-                tabindex="0">
-              </lightning-icon>
-              <div class="errorMessage">
-                {errorMessage}
-              </div>
-            </div>
+  <div class="container" onclick={clickField} onmousemove={handleMouseMove} onmousedown={handleMouseDown}>
+    <div class="orderNumItem" data-column="orderNumItem">
+      {orderNumber}
+      <div class="errorIcon">
+        <lightning-icon icon-name="utility:error" size="x-small" onfocus={showItemErrorMsg} onblur={hideItemErrorMsg}
+          tabindex="0">
+        </lightning-icon>
+        <div class="errorMessage">
+          {errorMessage}
         </div>
-        <template iterator:it={dataForLoop}>
-          <div 
-            class="item" 
-            key={it.value.key} 
-            data-column={it.value.key} 
-            data-index={it.index}
-            data-requiredwithoutvalue={it.value.value.requiredWithoutValue}>
-            <template lwc:if={it.value.value.name}>
-              <div class="firstField">
-                <div class="url">
-                  <lightning-formatted-url  
-                    label={it.value.value.name} 
-                    value={it.value.value.id} 
-                    target="_blank">
-                  </lightning-formatted-url>
-                </div>
-                <div class="lockIcon">
-                  <lightning-icon  icon-name="utility:lock" size="x-small"></lightning-icon>
-                </div>
+      </div>
+    </div>
+    <template iterator:it={dataForLoop}>
+      <div class="item" key={it.value.key} data-column={it.value.key} data-index={it.index}
+        data-requiredwithoutvalue={it.value.value.requiredWithoutValue}>
+        <template lwc:if={it.value.value.name}>
+          <div class="firstField">
+            <div class="url">
+              <lightning-formatted-url label={it.value.value.name} value={it.value.value.id} target="_blank">
+              </lightning-formatted-url>
+            </div>
+            <div class="lockIcon">
+              <lightning-icon icon-name="utility:lock" size="x-small"></lightning-icon>
+            </div>
+          </div>
+        </template>
+        <template lwc:else>
+          <div class="restFields">
+            <!-- Quantity Field -->
+            <template lwc:if={it.value.value.isQuantity}>
+              <div class="quantityValue">
+                {it.value.value.numberString}
               </div>
+              <div class="editIcon">
+                <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+              </div>
+              <template lwc:if={it.value.value.required}>
+                <template lwc:if={it.value.value.numberString}>
+                  <div class="requiredWithValue">
+                    <label><input type="text" value={it.value.value.numberString} data-key={it.value.key} data-required
+                        oninput={handleNumberInput} onkeypress={handleEnterKeyPressForNumber}
+                        onblur={handleBlurForNumber} />
+                    </label>
+                  </div>
+                </template>
+                <template lwc:else>
+                  <div class="requiredWithNoValue">
+                    <label><input type="text" data-key={it.value.key} data-required data-requiredcomplete
+                        oninput={handleNumberInput} onkeypress={handleEnterKeyPressForNumber}
+                        onblur={handleBlurForNumber} />
+                    </label>
+                  </div>
+                </template>
+              </template>
             </template>
-            <template lwc:else>
-              <div class="restFields">
-                <!-- Quantity Field -->
-                <template lwc:if={it.value.value.isQuantity}>
-                  <div class="quantityValue">
-                    {it.value.value.numberString}
-                  </div>
-                  <div class="editIcon">
-                    <lightning-icon  icon-name="utility:edit" size="x-small"></lightning-icon>
-                  </div>
-                  <template lwc:if={it.value.value.required}>
-                    <template lwc:if={it.value.value.numberString}>
-                      <div class="requiredWithValue" >
-                        <label><input 
-                          type="text" 
-                          value={it.value.value.numberString}  
-                          data-key = {it.value.key}
-                          data-required
-                          oninput={handleNumberInput}
-                          onkeypress={handleEnterKeyPressForNumber}
-                          onblur={handleBlurForNumber}
-                          />
-                          <!-- oninput={handleNumberInput}  -->
-                        </label>
-                      </div>
-                    </template>
-                    <template lwc:else>
-                      <div class="requiredWithNoValue" >
-                        <label><input 
-                          type="text"  
-                          data-key = {it.value.key}
-                          data-required
-                          data-requiredcomplete
-                          oninput={handleNumberInput}
-                          onkeypress={handleEnterKeyPressForNumber}
-                          onblur={handleBlurForNumber}
-                          />
-                          <!-- oninput={handleNumberInput} -->
-                        </label>
-                        <!-- <div>Complete this field.</div> -->
-                      </div>
-                    </template>
-                  </template>
-                </template>
 
-                <!-- Sales Price Field -->
-                <template lwc:if={it.value.value.isUnitPrice}>
-                  <div class="unitPriceValue">
-                    {it.value.value.numberString}
-                  </div>
-                  <div class="editIcon">
-                    <lightning-icon  icon-name="utility:edit" size="x-small"></lightning-icon>
-                  </div>
-                  <template lwc:if={it.value.value.required}>
-                    <template lwc:if={it.value.value.numberString}>
-                      <div class="requiredWithValue" >
-                        <label><input 
-                          type="text" 
-                          value={it.value.value.numberString}  
-                          data-key = {it.value.key}
-                          data-required
-                          oninput={handleNumberInput}
-                          onkeypress={handleEnterKeyPressForNumber}
-                          onblur={handleBlurForNumber}
-                          />
-                          <!-- oninput={handleNumberInput}  -->
-                        </label>
-                      </div>
-                    </template>
-                    <template lwc:else>
-                      <div class="requiredWithNoValue" >
-                        <label><input 
-                          type="text"  
-                          data-key = {it.value.key}
-                          data-required
-                          data-requiredcomplete
-                          oninput={handleNumberInput}
-                          onkeypress={handleEnterKeyPressForNumber}
-                          onblur={handleBlurForNumber}
-                          />
-                          <!-- oninput={handleNumberInput} -->
-                        </label>
-                        <!-- <div>Complete this field.</div> -->
-                      </div>
-                    </template>
-                  </template>
-                </template>
-
-                <!-- Date Field -->
-                <template lwc:if={it.value.value.isServiceDate}>
-                  <div class="serviceDateValue">
-                    {it.value.value.numberString}
-                  </div>
-                  <div class="editIcon">
-                    <lightning-icon  icon-name="utility:edit" size="x-small"></lightning-icon>
-                  </div>
-                  <template lwc:if={it.value.value.required}></template>
-                  <template lwc:else>
-                    <div class="notRequired" >
-                      <!-- <label><input 
-                        type="date"  
-                        data-key = {it.value.key}
-                        oninput={handleNumberInput}
-                        onkeypress={handleEnterKeyPressForNumber}
-                        onblur={handleBlurForNumber}
-                        />
-                      </label> -->
-                      <lightning-input 
-                        type="date" 
-                        data-key = {it.value.key} 
-                        date-style="short"
-                        onchange={handleNumberInput}
-                        onkeypress={handleEnterKeyPressForNumber}
-                        onblur={handleBlurForNumber}
-                        >
-                        <!-- focused -->
-                        <!-- onchange={handleNumberInput} -->
-                      </lightning-input>
-                    </div> 
-                  </template>
-                </template>
-
-                <!-- Line Description Field -->
-                <template lwc:if={it.value.value.isDescription}>
-                  <div class="DescriptionValue">
-                    {it.value.value.numberString}
-                  </div>
-                  <div class="editIcon">
-                    <lightning-icon  icon-name="utility:edit" size="x-small"></lightning-icon>
-                  </div>
-                  <template lwc:if={it.value.value.required}></template>
-                  <template lwc:else>
-                    <div class="notRequired" >
-                      <input 
-                          type="text"  
-                          data-key = {it.value.key}
-                          data-required
-                          data-requiredcomplete
-                          oninput={handleNumberInput}
-                          onkeypress={handleEnterKeyPressForNumber}
-                          onblur={handleBlurForNumber}
-                        />
-                    </div> 
-                  </template>
-                </template>
+            <!-- Sales Price Field -->
+            <template lwc:if={it.value.value.isUnitPrice}>
+              <div class="unitPriceValue">
+                {it.value.value.numberString}
               </div>
+              <div class="editIcon">
+                <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+              </div>
+              <template lwc:if={it.value.value.required}>
+                <template lwc:if={it.value.value.numberString}>
+                  <div class="requiredWithValue">
+                    <label><input type="text" value={it.value.value.numberString} data-key={it.value.key} data-required
+                        oninput={handleNumberInput} onkeypress={handleEnterKeyPressForNumber}
+                        onblur={handleBlurForNumber} />
+                    </label>
+                  </div>
+                </template>
+                <template lwc:else>
+                  <div class="requiredWithNoValue">
+                    <label><input type="text" data-key={it.value.key} data-required data-requiredcomplete
+                        oninput={handleNumberInput} onkeypress={handleEnterKeyPressForNumber}
+                        onblur={handleBlurForNumber} />
+                    </label>
+                  </div>
+                </template>
+              </template>
+            </template>
+
+            <!-- Date Field -->
+            <template lwc:if={it.value.value.isServiceDate}>
+              <div class="serviceDateValue">
+                {it.value.value.numberString}
+              </div>
+              <div class="editIcon">
+                <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+              </div>
+              <template lwc:if={it.value.value.required}></template>
+              <template lwc:else>
+                <div class="notRequired">
+                  <lightning-input type="date" data-key={it.value.key} date-style="short" onchange={handleNumberInput}
+                    onkeypress={handleEnterKeyPressForNumber} onblur={handleBlurForNumber}>
+                  </lightning-input>
+                </div>
+              </template>
+            </template>
+
+            <!-- Line Description Field -->
+            <template lwc:if={it.value.value.isDescription}>
+              <div class="DescriptionValue">
+                {it.value.value.numberString}
+              </div>
+              <div class="editIcon">
+                <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+              </div>
+              <template lwc:if={it.value.value.required}></template>
+              <template lwc:else>
+                <div class="notRequired">
+                  <input type="text" data-key={it.value.key} data-required data-requiredcomplete
+                    oninput={handleNumberInput} onkeypress={handleEnterKeyPressForNumber}
+                    onblur={handleBlurForNumber} />
+                </div>
+              </template>
             </template>
           </div>
         </template>
-        <div class="removeIconItem" data-column="removeIconItem" data-index="5">
-          <!-- <lightning-icon  icon-name="utility:delete" size="x-small"></lightning-icon> -->
-          <lightning-button-icon 
-            icon-name="utility:delete"    
-            variant="border-filled" 
-            alternative-text="Delete"   
-            size="small"
-            title="Delete"
-            onclick={deleteRow}>
-          </lightning-button-icon>
-        </div>
       </div>
+    </template>
+    <div class="removeIconItem" data-column="removeIconItem" data-index="5">
+      <lightning-button-icon icon-name="utility:delete" variant="border-filled" alternative-text="Delete" size="small"
+        title="Delete" onclick={deleteRow}>
+      </lightning-button-icon>
+    </div>
+  </div>
 </template>
-
-<!-- 1. copy html
-2. update css 
-3. update js
-quantityUpdatedTimes = 0
-unitPriceUpdatedTimes = 0
-if(div.dataset.column === 'Quantity'){
-  this.quantityUpdatedTimes++;
-}
-if(div.dataset.column === 'UnitPrice'){
-  this.unitPriceUpdatedTimes++;
-}
-if (this.quantityUpdatedTimes === 1) {
-  div.style.border = '1px solid rgb(11, 92, 171)';
-  return;
-}
-if (this.unitPriceUpdatedTimes === 1) {
-  div.style.border = '1px solid rgb(11, 92, 171)';
-  return;
-} -->

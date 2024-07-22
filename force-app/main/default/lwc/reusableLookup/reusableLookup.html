@@ -1,53 +1,45 @@
 <template>
     <div class="slds-form-element">
         <div class="slds-form-element__control">
-            <div class="slds-combobox_container searchBar" >
+            <div class="slds-combobox_container searchBar">
                 <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
                     <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-                        <input type="text" 
-                               class="slds-input slds-combobox__input"  
-                               role="combobox" 
-                               oninput={handleChange} 
-                               onblur={handleInputBlur} 
-                               onclick={getTopRecords} 
-                               onkeypress={handleEnterKeyPress} 
-                               onkeydown= {NavigateListItems}
-                               required={required} 
-                               placeholder={placeholder} />
-                        <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                        <input type="text" class="slds-input slds-combobox__input" role="combobox"
+                            oninput={handleChange} onblur={handleInputBlur} onclick={getTopRecords}
+                            onkeypress={handleEnterKeyPress} onkeydown={NavigateListItems} required={required}
+                            placeholder={placeholder} />
+                        <span
+                            class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
                             <lightning-icon icon-name="utility:search" alternative-text="Remove selected option"
-                            size="x-small"></lightning-icon>
+                                size="x-small"></lightning-icon>
                         </span>
                     </div>
                 </div>
             </div>
 
             <template if:true={showRecords}>
-                <div tabindex="0" 
-                     onblur={selectionPanelBlurHandler} 
-                     onmousedown={preventInputboxBlurEvent}
-                     onmouseleave = {handleLeaveDropDownList}
-                     class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid">
+                <div tabindex="0" onblur={selectionPanelBlurHandler} onmousedown={preventInputboxBlurEvent}
+                    onmouseleave={handleLeaveDropDownList}
+                    class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid">
                     <ul class="slds-listbox slds-listbox_vertical" role="presentation">
                         <template if:true={showSearchLi}>
                             <li role="presentation" class="slds-listbox__item">
                                 <!-- slds-has-focus -->
-                                <div aria-selected="true" 
-                                     class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term liDiv searchTermBar" 
-                                     role="option"
-                                     onmouseenter= {handleMouseEnterLi}
-                                >
+                                <div aria-selected="true"
+                                    class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term liDiv searchTermBar"
+                                    role="option" onmouseenter={handleMouseEnterLi}>
                                     <span class="slds-media__figure slds-listbox__option-icon">
-                                        <span class="slds-icon_container slds-icon-utility-search" title="Search for term: ">
-                                        <lightning-icon icon-name="utility:search" alternative-text="Remove selected option"
-                                        size="x-small"></lightning-icon>
-                                        <span class="slds-assistive-text">Search for term: </span>
+                                        <span class="slds-icon_container slds-icon-utility-search"
+                                            title="Search for term: ">
+                                            <lightning-icon icon-name="utility:search"
+                                                alternative-text="Remove selected option"
+                                                size="x-small"></lightning-icon>
+                                            <span class="slds-assistive-text">Search for term: </span>
                                         </span>
                                     </span>
                                     <span class="slds-media__body">
-                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity" 
-                                              onclick = {searchStrClickHandler}
-                                        >
+                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                            onclick={searchStrClickHandler}>
                                             "{searchString}" in Products
                                         </span>
                                     </span>
@@ -57,21 +49,17 @@
                         <div>
                             <template for:each={recordsList} for:item="rec" for:index="index">
                                 <li data-role="resultList" role="presentation" key={rec.Id} class="slds-listbox__item ">
-                                    <div data-id={rec.Id} 
-                                         data-index={index}
-                                         class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta liDiv"
-                                         role="option"
-                                         onclick={handleSelect} 
-                                         onmouseenter= {handleMouseEnterLi}
-                                    >
+                                    <div data-id={rec.Id} data-index={index}
+                                        class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta liDiv"
+                                        role="option" onclick={handleSelect} onmouseenter={handleMouseEnterLi}>
                                         <span class="slds-media__figure slds-listbox__option-icon">
-                                            <lightning-icon icon-name={selectedIconName} alternative-text={selectedIconName}
-                                                size="small"></lightning-icon>
+                                            <lightning-icon icon-name={selectedIconName}
+                                                alternative-text={selectedIconName} size="small"></lightning-icon>
                                         </span>
                                         <div class="slds-media__body">
                                             <div class="flexbox">
-                                                <div class="flexItemTitle" lwc:dom="manual" >
-                                                    <!-- {rec.Product2Name} -->
+                                                <div class="flexItemTitle" lwc:dom="manual">
+                                                    <!-- {rec.Product2Name placeholder} -->
                                                 </div>
                                                 <div class="flexItemSubtitle">
                                                     {rec.Product2.ProductCode}

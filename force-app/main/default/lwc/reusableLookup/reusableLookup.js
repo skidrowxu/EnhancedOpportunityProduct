@@ -6,8 +6,7 @@ import { debounce } from "c/utilities";
 const DELAY = 500;
 
 export default class ReusableLookup extends LightningElement {
-    // @api helpText = "custom search lookup";
-    @api placeholder = "Search Products..." ;
+    @api placeholder = "Search Products...";
     @api required;
     @api selectedIconName;
     @api sourceData;
@@ -24,14 +23,13 @@ export default class ReusableLookup extends LightningElement {
     selectedRecordName;
 
     searchString = "";
-    // @api selectedRecordId = "";
     @api parentRecordId;
     @api parentFieldApiNames;
     @api topNum = "3";
-    
+
     @api checkedPricebookEntryIds;
     @track
-    rerenderConditionObject ={
+    rerenderConditionObject = {
         isTopRecord: false,
         handleChanged: false
     }
@@ -39,7 +37,7 @@ export default class ReusableLookup extends LightningElement {
     @track
     flexItemTitleDivs;
 
-    
+
 
     get showRecords() {
         if (this.recordsList.length > 1 || this.searchString.length > 1) {
@@ -48,7 +46,7 @@ export default class ReusableLookup extends LightningElement {
         return false;
     }
 
-    get showSearchLi(){
+    get showSearchLi() {
         return this.searchString.length > 1
     }
 
@@ -66,8 +64,8 @@ export default class ReusableLookup extends LightningElement {
             checkedRecordIds: [...this.checkedPricebookEntryIds]
         };
     }
-   
-    setValueBack(){
+
+    setValueBack() {
         this.searchString = '';
         this.recordsList = [];
         this.currentLi = -1;
@@ -87,9 +85,9 @@ export default class ReusableLookup extends LightningElement {
                         }
                         if (key === 'handleChanged') {
                             div.innerHTML = rec.Product2.Name.replaceAll(new RegExp(this.searchString, 'gi'), (subStr) => {
-                                                console.log(subStr);
-                                                return '<b>' + subStr + '</b>';
-                                            });
+                                console.log(subStr);
+                                return '<b>' + subStr + '</b>';
+                            });
                         }
                     }
                 }
@@ -97,11 +95,11 @@ export default class ReusableLookup extends LightningElement {
         }
     }
 
-    renderedCallback(){
+    renderedCallback() {
         this.updateLiTags();
     }
 
-    getTopRecords(){
+    getTopRecords() {
         let inputValue = this.template.querySelector('input').value;
         if (inputValue.trim().length === 0) {
             this.noFilter = true;
@@ -111,18 +109,17 @@ export default class ReusableLookup extends LightningElement {
         if (inputValue.length > 0) {
             this.searchString = inputValue;
             this.rerenderConditionObject.handleChanged = true;
-            if(this.recordsListClone?.length > 0){
+            if (this.recordsListClone?.length > 0) {
                 this.recordsList = this.recordsListClone;
                 this.recordsListClone = null;
             } else if (this.oneRecordChecked && inputValue.length > 1) {
                 this.noFilter = false;
                 this.debouncedFetch();
             }
-        } 
-       this.oneRecordChecked =  false;
+        }
+        this.oneRecordChecked = false;
     }
 
-    //call the apex method
     fetchSobjectRecords() {
         fetchRecords({
             inputWrapper: this.methodInput
@@ -134,13 +131,6 @@ export default class ReusableLookup extends LightningElement {
         })
     }
 
-      // Id: "01u4x000010z5BgAAI"
-      // Product2: 
-      //     Id: "01t4x000008TkaZAAS"
-      //     Name: "Test Product 0"
-      //     ProductCode: "TP0"
-      // Product2Id: "01t4x000008TkaZAAS"
-      // UnitPrice: 0
     debouncedFetch = debounce(this.fetchSobjectRecords, DELAY);
     //handler for calling apex when user change the value in lookup
     handleChange(e) {
@@ -158,7 +148,7 @@ export default class ReusableLookup extends LightningElement {
             this.setValueBack();
         }
     }
-    
+
     //input box blur event handler
     handleInputBlur() {
         this.recordsListClone = this.recordsList;
@@ -170,12 +160,12 @@ export default class ReusableLookup extends LightningElement {
         this.setValueBack();
     }
 
-    preventInputboxBlurEvent(event){
+    preventInputboxBlurEvent(event) {
         //in order to prevent inputbox blur event
         event.preventDefault();
     }
 
-    handleEnterKeyPress(event){
+    handleEnterKeyPress(event) {
         if (event.key === "Enter") {
             event.preventDefault();
             if (this.currentLi !== -1) {
@@ -188,43 +178,43 @@ export default class ReusableLookup extends LightningElement {
                     this.sendRecordIdToParent(selectedRecordId);
                     this.oneRecordChecked = true;
                 }
-            } 
+            }
         }
     }
 
-    
+
     currentLi = -1;
     //Arrow keys are only triggered by onkeydown, not onkeypress
-    NavigateListItems(event){
+    NavigateListItems(event) {
         //ArrowUp ArrowDown
         if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
             let liDivs = this.template.querySelectorAll('.liDiv');
             if (liDivs.length > 0) {
                 //remove selected class from previous liDiv
                 liDivs[this.currentLi] && liDivs[this.currentLi].classList.remove('selected');
-                if (event.key ==='ArrowDown') {
-                    this.currentLi = this.currentLi < liDivs.length-1 ? ++this.currentLi : 0;
+                if (event.key === 'ArrowDown') {
+                    this.currentLi = this.currentLi < liDivs.length - 1 ? ++this.currentLi : 0;
                     liDivs[this.currentLi].classList.add('selected');
                 }
-                if (event.key ==='ArrowUp') {
-                    this.currentLi = this.currentLi <= 0 ? liDivs.length-1 : --this.currentLi;
+                if (event.key === 'ArrowUp') {
+                    this.currentLi = this.currentLi <= 0 ? liDivs.length - 1 : --this.currentLi;
                     liDivs[this.currentLi].classList.add('selected');
                 }
                 console.log(this.currentMousePointedLiDiv === liDivs[this.currentLi]);
-                if (this.currentMousePointedLiDiv && 
+                if (this.currentMousePointedLiDiv &&
                     this.currentMousePointedLiDiv === liDivs[this.currentLi] &&
                     liDivs[this.currentLi].style.backgroundColor === 'white') {
                     liDivs[this.currentLi].style.removeProperty("background-color");
-                } else if (this.currentMousePointedLiDiv && 
-                           this.currentMousePointedLiDiv !== liDivs[this.currentLi] && 
-                           this.currentMousePointedLiDiv.style.backgroundColor !== 'white'){
+                } else if (this.currentMousePointedLiDiv &&
+                    this.currentMousePointedLiDiv !== liDivs[this.currentLi] &&
+                    this.currentMousePointedLiDiv.style.backgroundColor !== 'white') {
                     this.currentMousePointedLiDiv.style.backgroundColor = 'white'
                 }
             }
         }
     }
     currentMousePointedLiDiv;
-    handleMouseEnterLi(event){
+    handleMouseEnterLi(event) {
         //remove previous currentMousePointedLiDiv background-color style
         (this.currentMousePointedLiDiv?.style.backgroundColor === 'white') && this.currentMousePointedLiDiv.style.removeProperty("background-color");
         this.currentMousePointedLiDiv = event.currentTarget;
@@ -233,9 +223,9 @@ export default class ReusableLookup extends LightningElement {
         //if it is Search term Li 
         if (this.currentMousePointedLiDiv.dataset.index === undefined) {
             this.currentLi = 0;
-        } else if (this.currentMousePointedLiDiv.dataset.index && this.template.querySelector('.searchTermBar')){
+        } else if (this.currentMousePointedLiDiv.dataset.index && this.template.querySelector('.searchTermBar')) {
             this.currentLi = (+this.currentMousePointedLiDiv.dataset.index) + 1;
-        } else if (this.currentMousePointedLiDiv.dataset.index && !this.template.querySelector('.searchTermBar')){
+        } else if (this.currentMousePointedLiDiv.dataset.index && !this.template.querySelector('.searchTermBar')) {
             this.currentLi = this.currentMousePointedLiDiv.dataset.index;
         }
         for (const liDiv of liDivs) {
@@ -245,14 +235,14 @@ export default class ReusableLookup extends LightningElement {
         }
     }
 
-    handleLeaveDropDownList(){
+    handleLeaveDropDownList() {
         console.log(this.currentMousePointedLiDiv);
         (!this.currentMousePointedLiDiv?.classList.contains('selected')) && this.currentMousePointedLiDiv?.classList.add('selected');
     }
 
-    searchStrClickHandler(){
+    searchStrClickHandler() {
         if (this.searchString.length > 1) {
-            const searchEvent = new CustomEvent("search", { detail: this.searchString});
+            const searchEvent = new CustomEvent("search", { detail: this.searchString });
             this.dispatchEvent(searchEvent);
             this.setValueBack();
         }
@@ -266,13 +256,11 @@ export default class ReusableLookup extends LightningElement {
         this.oneRecordChecked = true;
     }
 
-    sendRecordIdToParent(selectedRecordId){
+    sendRecordIdToParent(selectedRecordId) {
         this.setValueBack();
-        // Creates the event
         const selectedEvent = new CustomEvent('recordselected', {
             detail: selectedRecordId
         });
-        //dispatching the custom event
         this.dispatchEvent(selectedEvent);
     }
 }
