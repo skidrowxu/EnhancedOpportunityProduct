@@ -114,7 +114,6 @@ public with sharing class AddProductButtonHandler {
         cFieldSetMembers.add(cf);
       }
     }
-    System.debug(cFieldSetMembers);
     return cFieldSetMembers;
   }
 
@@ -136,12 +135,10 @@ public with sharing class AddProductButtonHandler {
   public static List<PricebookEntry> getPricebookEntries(
     string paraWrapperStr
   ) {
-    System.debug(paraWrapperStr);
     ParaWrapper paras = (paraWrParaWrapperapper) JSON.deserialize(
       paraWrapperStr,
       ParaWrapper.class
     );
-    system.debug(paras.checkedRecordIds);
     String query = '';
     if (!paras.checkedRecordIds.isEmpty()) {
       query =
@@ -168,8 +165,6 @@ public with sharing class AddProductButtonHandler {
         ' OFFSET ' +
         paras.offset;
     }
-    System.debug('query :' + query);
-    System.debug('query length :' + query.length());
     List<PricebookEntry> pbEntries = Database.query(query);
     return pbEntries;
   }
@@ -182,7 +177,6 @@ public with sharing class AddProductButtonHandler {
       ' FROM PricebookEntry WHERE Id = \'' +
       id +
       '\' LIMIT 1';
-    System.debug('query :' + query);
     List<PricebookEntry> pbEntries = Database.query(query);
     return pbEntries[0];
   }
@@ -191,7 +185,6 @@ public with sharing class AddProductButtonHandler {
   public static List<PricebookEntry> getPricebookEntriesWithFilter(
     string paraWrapperWithFilterStr
   ) {
-    System.debug(paraWrapperWithFilterStr);
     ParaWrapperWithFilter parasWithFilter = (ParaWrapperWithFilter) JSON.deserialize(
       paraWrapperWithFilterStr,
       ParaWrapperWithFilter.class
@@ -226,10 +219,7 @@ public with sharing class AddProductButtonHandler {
         ' OFFSET ' +
         parasWithFilter.paraWrapper.offset;
     }
-    System.debug('query :' + query);
-    System.debug('query length :' + query.length());
     List<PricebookEntry> pbEntries = Database.query(query);
-    System.debug(pbEntries);
     return pbEntries;
   }
 
@@ -275,7 +265,6 @@ public with sharing class AddProductButtonHandler {
         result.add(String.valueOf(field));
       }
     }
-    system.debug(result);
     return result;
   }
 
@@ -283,7 +272,6 @@ public with sharing class AddProductButtonHandler {
   public static String saveOpportunityLineItems(
     List<OpportunityLineItem> oppoLineItems
   ) {
-    system.debug(oppoLineItems);
     Database.SaveResult[] srList = Database.insert(oppoLineItems, false);
     String resultStatus = 'successed';
     // Iterate through each returned result

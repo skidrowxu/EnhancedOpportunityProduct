@@ -3,7 +3,6 @@ public with sharing class ReusableLookupController {
   public static List<SObject> fetchRecords(SearchWrapper inputWrapper) {
     try {
       if (inputWrapper != null) {
-        System.debug(inputWrapper);
         String fieldsToQuery = 'SELECT Id, ';
         if (string.isNotBlank(inputWrapper.fieldApiNames)) {
           fieldsToQuery = fieldsToQuery + inputWrapper.fieldApiNames;
@@ -36,13 +35,11 @@ public with sharing class ReusableLookupController {
 
         query += ' ORDER BY ' + inputWrapper.sortByFiled;
         query += ' LIMIT ' + inputWrapper.topNum;
-        System.debug('query: ' + query);
         List<SObject> sObjList = Database.query(query);
         return sObjList;
       }
       return null;
     } catch (Exception err) {
-      System.debug(err.getStackTraceString());
       throw new AuraHandledException(err.getMessage());
     }
   }
